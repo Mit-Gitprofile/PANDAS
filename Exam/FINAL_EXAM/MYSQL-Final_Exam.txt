@@ -1,0 +1,321 @@
+						#  QUESTIONS  #
+						#=============#
+
+=====================================================================================================================================================
+# Database Schema:
+# Column	 -  Type
+
+# Customers
+
+# CustomerID -  INT
+# Name -  VARCHAR(50)
+# Age	  - INT
+# City - 	VARCHAR(50)
+
+
+# Orders
+
+# OrderID	INT
+# OrderDate	DATE
+# CustomerID	INT
+# Total	DECIMAL(10,2)
+
+
+# Products
+
+# ProductID	INT
+# Name	VARCHAR(50)
+# Price	DECIMAL(10,2)
+
+
+# OrderDetails
+
+# OrderDetailID	INT
+# OrderID	INT
+# ProductID	INT
+# Quantity	INT
+
+
+#1 Write a query to retrieve the names and cities of all customers.
+
+#2 Write a query to find the total amount spent by each customer. The result should include the customer's name and the total amount spent.
+
+#3 Write a query to find the number of orders placed in each month of 2023. The result should include the month and the number of orders.
+
+#4 Write a query to find the top 3 most expensive products.
+
+#5 Write a query to list the details of all orders including the order ID, order date, customer name, and total order amount.
+
+#6 Write a query to find customers who have placed more than 5 orders.
+
+#7 Write a query to find customers who have placed more than 5 orders.
+
+#8 Write a query to find the products that have never been ordered.
+
+#9 Write a query to find the customers who have not placed any orders in 2023.
+
+#10  Write a query to find the total quantity of each product sold. The result should include the product name and the total quantity sold.
+
+=====================================================================================================================================================
+								CREATING TABLES
+=====================================================================================================================================================
+
+
+create table ====> customers...
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+CREATE TABLE customers
+(
+    customer_id int,
+    name varchar(50),
+    age int,
+    city varchar(50)
+);
+
+INSERT INTO customers(customer_id,name,age,city)
+VALUES
+(10,'ram',20,'surat'),
+(11,'aam',18,'junagadh'),
+(12,'bam',19,'rajkot'),
+(13,'alisham',20,'ahmedabad'),
+(14,'papm',21,'nikol'),
+(15,'mumnm',22,'amareli'),
+(16,'lakhan',18,'bhavmagar'),
+(17,'sita',19,'anand'),
+(18,'kumbh',22,'dwarka'),
+(19,'maharshi',21,'porbandar');
+
+
+===========================================================================================================================================
+create table ====> orders...
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+
+CREATE TABLE orders
+(
+    order_id int,
+    orderdate date,
+    customer_id int,
+    total decimal(10,2),
+    given_orders int
+);
+
+INSERT INTO orders (order_id,orderdate,customer_id,total,given_orders)
+values
+(101,'2025-03-20',10,1500.5,6),
+(102,'2025-03-21',11,2450.75,10),
+(103,'2025-04-22',12,1250,7),
+(104,'2025-05-23',12,3200,9),
+(105,'2025-03-24',14,980,23),
+(106,'2025-05-25',10,1750,20),
+(107,'2025-06-26',16,4300,15),
+(108,'2025-08-27',13,2999.9,2),
+(109,'2025-09-28',18,850,3),
+(110,'2025-02-27',11,1234,4);
+
+===========================================================================================================================================
+create table ====> products...
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+
+CREATE TABLE products
+(
+    product_id int,
+    name varchar(50),
+    price decimal(10,2)
+);
+
+INSERT INTO products(product_id,name,price)
+VALUES
+(2001,'ProductA',10.00),
+(2002,'ProductB',20.00),
+(2003,'ProductC',30.00),
+(2004,'ProductD',40.00),
+(2005,'ProductE',50.00),
+(2006,'ProductF',60.00),
+(2007,'ProductG',70.00),
+(2008,'ProductH',80.00),
+(2009,'ProductI',90.00);
+
+==========================================================================================================================================
+create table ====> orderdetails...
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+
+CREATE TABLE orderdetails
+(
+    orderdetail_id int,
+    order_id int,
+    product_id int,
+    quantity int
+);
+
+INSERT INTO orderdetails(orderdetail_id,order_id,product_id,quantity)
+VALUES
+(1,101,2001,5),
+(2,102,2002,3),
+(3,103,2003,10),
+(4,104,2003,2),
+(5,105,2005,1),
+(6,106,2006,15),
+(7,107,2007,25),
+(8,108,2006,4),
+(9,109,2005,45),
+(10,110,20010,12);
+
+
+=====================================================================================================================
+
+			     # 	QUERIES  #
+			     #===========#
+				QUE-1.=>
+=====================================================================================================================
+	QUE-1.=> Write a query to retrieve the names and cities of all customers.
+*********************************************************************************************************************
+	
+SELECT name,city FROM customers;
+
+*********************************************************************************************************************
+
+
+				QUE-2.=>
+=====================================================================================================================
+	QUE-2.=>Write a query to find the total amount spent by each customer. The result should include the customer's name and the total amount spent.
+*********************************************************************************************************************
+	
+SELECT c.customer_id,c.name,o.total as spent_money 
+FROM customers as c
+join orders as o on c.customer_id=o.customer_id;
+
+*********************************************************************************************************************
+
+
+				QUE-3.=>
+=====================================================================================================================
+	QUE-3.=> Write a query to find the number of orders placed in each month of 2023. The result should include the month and the number of orders.
+*********************************************************************************************************************
+	
+select month(orderdate),count(*) as count_orders 
+from orders 
+group by(month(orderdate))
+order by month(orderdate) ASC;	
+
+*********************************************************************************************************************
+
+
+				QUE-4.=>
+=====================================================================================================================
+	QUE-4.=> Write a query to find the top 3 most expensive products.
+*********************************************************************************************************************
+	
+select name , max(price) as max_price 
+from products 
+group by name 
+order by max_price DESC 
+limit 3;
+
+=====================================
+
+select name,price from products
+order by price DESC
+limit 3;	
+
+*********************************************************************************************************************
+
+
+				QUE-5.=>
+=====================================================================================================================
+	QUE-5.=> Write a query to list the details of all orders including the order ID, order date, customer name, and total order amount.
+*********************************************************************************************************************
+
+select o.order_id,o.orderdate,o.customer_id,c.name,o.total
+from orders as o
+join customers as c on c.customer_id=o.customer_id;	
+
+*********************************************************************************************************************
+
+
+				QUE-6.=>
+=====================================================================================================================
+	QUE-6.=> Write a query to find customers who have placed more than 5 orders.
+*********************************************************************************************************************
+	
+select c.customer_id,c.name,o.given_orders
+from customers as c
+join orders as o 
+on c.customer_id=o.customer_id
+where o.given_orders>=5;	
+
+*********************************************************************************************************************
+
+
+				QUE-7.=>
+=====================================================================================================================
+	QUE-7.=>Write a query to find customers who have placed more than 5 orders.
+*********************************************************************************************************************
+	
+select c.customer_id,c.name,o.given_orders
+from customers as c
+join orders as o 
+on c.customer_id=o.customer_id
+where o.given_orders<=5;	
+
+*********************************************************************************************************************
+
+
+				QUE-8.=>
+=====================================================================================================================
+	QUE-8.=>Write a query to find the products that have never been ordered.
+*********************************************************************************************************************
+	
+select p.name,p.price from products p
+left join orderdetails as o on p.product_id=o.product_id
+where o.product_id IS NULL;
+
+============================================================
+
+select product_id,name,price 
+from products
+where product_id not in(select product_id from orderdetails);	
+
+*********************************************************************************************************************
+
+
+				QUE-9.=>
+=====================================================================================================================
+	QUE-9.=>Write a query to find the customers who have not placed any orders in 2023.
+*********************************************************************************************************************
+	
+select c.customer_id,c.name
+from customers c
+where customer_id not in (select customer_id from orders where year(orderdate)!=2023);	
+
+*********************************************************************************************************************
+
+
+				QUE-10.=>
+=====================================================================================================================
+	QUE-10.=>Write a query to find the total quantity of each product sold. The result should include the product name and the total quantity sold.
+*********************************************************************************************************************
+	
+select p.name,sum(o.quantity) as sold_quentity
+from products p
+join orderdetails as o on o.product_id=p.product_id
+group by name;
+
+*********************************************************************************************************************
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
