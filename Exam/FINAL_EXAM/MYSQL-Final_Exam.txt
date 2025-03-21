@@ -100,16 +100,16 @@ CREATE TABLE orders
 
 INSERT INTO orders (order_id,orderdate,customer_id,total,given_orders)
 values
-(101,'2025-03-20',10,1500.5,6),
+(101,'2023-03-20',10,1500.5,6),
 (102,'2025-03-21',11,2450.75,10),
-(103,'2025-04-22',12,1250,7),
+(103,'2024-04-22',12,1250,7),
 (104,'2025-05-23',12,3200,9),
-(105,'2025-03-24',14,980,23),
+(105,'2023-03-24',14,980,23),
 (106,'2025-05-25',10,1750,20),
-(107,'2025-06-26',16,4300,15),
-(108,'2025-08-27',13,2999.9,2),
-(109,'2025-09-28',18,850,3),
-(110,'2025-02-27',11,1234,4);
+(107,'2023-06-26',16,4300,15),
+(108,'2023-08-27',13,2999.9,2),
+(109,'2021-09-28',18,850,3),
+(110,'2022-02-27',11,1234,4);
 
 ===========================================================================================================================================
 create table ====> products...
@@ -191,8 +191,9 @@ join orders as o on c.customer_id=o.customer_id;
 	QUE-3.=> Write a query to find the number of orders placed in each month of 2023. The result should include the month and the number of orders.
 *********************************************************************************************************************
 	
-select month(orderdate),count(*) as count_orders 
-from orders 
+select month(orderdate) as month,count(*) as count_orders 
+from orders
+where year(orderdate)=2023
 group by(month(orderdate))
 order by month(orderdate) ASC;	
 
